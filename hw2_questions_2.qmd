@@ -86,13 +86,13 @@ price_upper_limit = airbnb['price'].quantile(0.95)
 
 plt.figure(figsize=(16, 12))
 sns.boxplot(data=airbnb, x='room_type', y='price', palette='Set2')
-plt.title('Price Distribution by Room Type', fontsize=30)  
-plt.xlabel('Room Type', fontsize=26)  
-plt.ylabel('Price Per Night', fontsize=26)  
+plt.title('Price Distribution by Room Type', fontsize=34)  
+plt.xlabel('Room Type', fontsize=30)  
+plt.ylabel('Price Per Night', fontsize=30)  
 plt.ylim(0, price_upper_limit)  
 
-plt.xticks(fontsize=20)
-plt.yticks(fontsize=20)
+plt.xticks(fontsize=26)
+plt.yticks(fontsize=26)
 
 plt.show()
 
@@ -127,11 +127,11 @@ This analysis can help Airbnb hosts and users understand typical pricing structu
 # Scatter plot for price vs. review scores
 plt.figure(figsize=(20, 18))
 sns.scatterplot(x='price', y='review_scores_value', data=airbnb)
-plt.title('Price vs. Review Scores Value', fontsize=30)  
-plt.xlabel('Price', fontsize=26) 
-plt.ylabel('Review Score Value', fontsize=26)  
-plt.xticks(fontsize=20)
-plt.yticks(fontsize=20)
+plt.title('Price vs. Review Scores Value', fontsize=34)  
+plt.xlabel('Price', fontsize=30) 
+plt.ylabel('Review Score Value', fontsize=30)  
+plt.xticks(fontsize=26)
+plt.yticks(fontsize=26)
 
 plt.show()
 ```
@@ -148,5 +148,299 @@ This scatter plot visualizes the relationship between the price of Airbnb listin
 - Overall, the plot shows that while price varies widely among Airbnb listings, the review scores for value remain high across the board, with notable exceptions at both mid-range and very low prices. This suggests that both under-delivering at mid-range prices and potential quality issues at extremely low prices can be detrimental to guest perceptions of value. This indicates that price alone may not be a deterrent to receiving high value scores, provided the offerings align well with guest expectations.
 
 
+<br>
 
+```{python}
+plt.figure(figsize=(12, 8))
+sns.pointplot(x='room_type', y='review_scores_value', data=airbnb, join=False)
+plt.title('Room Type vs. Review Scores Value', fontsize=20)
+plt.xlabel('Room Type', fontsize=16)
+plt.ylabel('Review Score Value', fontsize=16)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+
+plt.show()
+```
+
+##### General Observations: 
+- The plot displays review scores for three different room types: Private room, Entire home/apt, and Shared room.
+- Each room type is represented by a point indicating the median review score value, along with vertical lines showing the range of the scores.
+
+##### Private Room:
+- Median Score: Around 9.30.
+- Range: Narrow, indicating consistent review scores that cluster closely around the median. This suggests that guests have relatively uniform expectations and experiences in private rooms.
+
+##### Entire Home/Apt:
+- Median Score: Slightly higher than Private rooms, roughly around 9.35.
+- Range: Also narrow, similar to Private rooms, which indicates consistent satisfaction among guests. The slightly higher median score might suggest that guests typically enjoy slightly better experiences or perceive better value in entire homes or apartments compared to private rooms.
+
+##### Shared Room:
+- Median Score: Significantly lower, around 9.27.
+- Range: Much wider than the other two categories, extending from about 9.20 to 9.34. This indicates a high variability in guest experiences and satisfaction levels in shared rooms. The lower median score and wider range reflect the mixed reviews that shared rooms might receive, possibly due to the varying comfort levels and privacy standards among different guests.
+
+##### Implications:
+- Consistency in Private Rooms and Entire Homes: The narrow score ranges for Private rooms and Entire homes/apt suggest that these options are perceived consistently by guests, which could be beneficial for hosts focusing on these types of listings.
+- Variability in Shared Rooms: The broad range for Shared rooms points to inconsistent experiences, which could be a concern for hosts. They might need to manage expectations more carefully or improve aspects of the shared living arrangements to enhance satisfaction.
+
+## Synopsis of the Exploratory Data Analysis
+
+#### Overview
+- The first plot indicates the relationship between listing prices and the review scores assigned by guests, while the second plot focuses on how different room types—Private room, Entire home/apt, and Shared room—score on reviews.
+
+#### Analysis of Entire Homes under $2000
+- Review Scores Across Prices: From the "Price vs. Review Scores Value" scatter plot, it appears that listings priced under $2000, particularly those categorized as Entire homes/apartments, generally receive high review scores. This suggests that guests perceive these listings as offering good value, likely due to a combination of affordability, privacy, and amenities provided.
+- Concentration of High Scores: Most of the high review scores (around 9 to 10) cluster at prices below $2000. This indicates that Entire homes/apartments priced within this range are particularly well-received, providing an optimal balance between cost and guest satisfaction.
+
+
+#### Synthesis and Implications
+- Optimal Pricing Strategy for Entire Homes: The data suggests that Entire homes/apartments priced below $2000 not only receive high review scores but also do so consistently. This price point is likely seen as offering the best value for money among the various types of accommodations available on Airbnb.
+- Marketing Strategy: For Airbnb hosts, focusing on Entire homes/apartments within this price range could be a strategic move to attract guests seeking both quality and value. Marketing efforts could highlight the benefits of choosing an Entire home/apt, such as greater space and privacy, which are evidently valued by guests as reflected in their reviews.
+
+#### Revenue Management
+- Pricing Entire homes/apartments competitively, yet within the optimal range under $2000, could maximize occupancy rates while maintaining high guest satisfaction. This approach could also mitigate the risk of negative reviews that more commonly affect higher-priced listings or those offering less privacy, like Shared rooms.
+- In conclusion, Entire homes/apartments priced below $2000 represent a sweet spot on Airbnb, yielding high review scores and indicating high guest satisfaction. Hosts might consider this pricing strategy to enhance both guest experience and competitive edge in the Airbnb market. This strategy not only caters to guest preferences for value but also aligns with the broader objective of maximizing positive reviews, which are crucial for sustained success on the platform.
+
+
+
+
+<br><br>
+
+## Estimation of Simple Poisson Model 
+
+Since our outcome variable of interest, the number of reviews per listing, consists of small integer values and represents counts over time, we can use a Poisson distribution to model it. This is appropriate because review counts are discrete, non-negative, and can be assumed to occur independently across different listings. I'll start by estimating a simple Poisson model via Maximum Likelihood to understand the average rate at which reviews are given to listings.
+
+Now, I'll write the code for the likelihood or log-likelihood function of the Poisson model. This function is crucial for analyzing count data effectively, which is integral to our project's statistical modeling. By understanding and implementing this function, I'll be better equipped to handle data that inherently follows a Poisson distribution, providing insights into how often guests review Airbnb listings.
+
+
+```{r}
+poisson_loglikelihood <- function(lambda, y) {
+  n <- length(y) 
+  likelihood <- -n * lambda + sum(y * log(lambda)) - sum(lgamma(y + 1))
+  return(likelihood)
+}
+
+```
+
+
+#### Plotting Log-Likelihood
+
+After defining the log-likelihood function for our Poisson model, the next step is to use this function to plot how the log-likelihood changes with different values of the parameter lambda. This parameter represents the average number of reviews per listing, and understanding its effect is crucial for our model. I'll vary lambda over a range and use the observed number of reviews as the input value for y. This graphical representation will assist in visualizing how different lambda values influence the likelihood, aiding in the selection of the most appropriate lambda for our analysis.
+
+
+```{r}
+y <- airbnb$number_of_reviews
+
+# Generate a sequence of lambda values
+lambda_values <- seq(0.1, 10, by = 0.1)
+
+# Compute log-likelihood for each lambda using the poisson_loglikelihood function defined earlier
+log_likelihoods <- sapply(lambda_values, function(l) poisson_loglikelihood(l, y))
+
+# Plotting the log-likelihood against lambda
+data_to_plot <- data.frame(lambda = lambda_values, log_likelihood = log_likelihoods)
+
+ggplot(data_to_plot, aes(x = lambda, y = log_likelihood)) +
+  geom_line() +
+  labs(title = "Log-Likelihood of Poisson Model for Airbnb Reviews",
+       x = "Lambda (λ)",
+       y = "Log-Likelihood") +
+  theme_minimal()
+
+
+```
+
+
+#### Plot Interpretation
+
+- Shape of the Curve: The curve is unimodal, showing a clear peak which indicates the maximum log-likelihood. This peak represents the most probable value of lambda (λ) that fits the observed review count data in terms of likelihood maximization.
+
+- Maximum Likelihood Estimate (MLE): The value of λ at the peak of the curve is the Maximum Likelihood Estimate for the Poisson model's rate parameter. This is the point where the derivative of the log-likelihood function with respect to λ is zero, indicating no further increase in likelihood is possible by increasing or decreasing λ.
+
+- Interpretation of λ: In the context of the Poisson distribution for this Airbnb data, λ represents the average number of reviews per listing. Observing the plot, the MLE of λ appears to be around 2.5, though the exact value can be more accurately determined using optimization techniques such as the optim() function in R or by directly examining the computed log-likelihood values.
+
+- Goodness of Fit: The shape of the curve around the peak provides insights into the precision of the estimate. A sharper, narrower peak suggests a more precise estimate of λ, indicating a clear optimization signal for the model. The relatively steep rise and decline around the peak suggest that the model is sensitive to changes in λ around the MLE, enhancing confidence in the lambda estimate's precision.
+
+- Usefulness: This log-likelihood plot is highly useful for optimization because it confirms the existence of a maximum likelihood point. Such a plot aids in visual verification that the model parameters can indeed be optimized to find a best-fit λ, aligning with the purpose of the optim() function which seeks to locate this point of maximum likelihood.
+
+
+<br>
+
+#### Optimization of the Poisson Model 
+
+I will now proceed to find the maximum likelihood estimate (MLE) by optimizing the likelihood function for the number of reviews on Airbnb listings. I’ll use the optim() function in R to perform this optimization. This step will help identify the parameter values that make the observed data most probable under the assumed Poisson distribution model, ensuring the best fit for our statistical analysis.
+
+```{r}
+# Define the negative log-likelihood function for the Poisson distribution
+neg_log_likelihood_poisson <- function(lambda, y) {
+  if (lambda <= 0) {
+    return(Inf)  
+  }
+  n <- length(y)
+  likelihood <- n * lambda - sum(y * log(lambda)) + sum(lgamma(y + 1))
+  return(likelihood)
+}
+
+y <- airbnb$number_of_reviews  
+
+# The starting value for lambda is chosen as the mean of y, which is a reasonable initial guess
+result <- optim(par = mean(y), fn = neg_log_likelihood_poisson, y = y, method = "BFGS")
+
+# The MLE of lambda
+lambda_mle <- result$par
+
+# Output the MLE of lambda
+print(lambda_mle)
+
+```
+
+
+#### Interpreting the Maximum Likelihood Estimate (MLE) for Airbnb Reviews
+
+The output of 15.90443 from the optim() function represents the maximum likelihood estimate (MLE) for the parameter λ of the Poisson distribution, which models the number of reviews received by each listing on Airbnb.
+
+- Mean Rate (λ): The MLE λ of 15.90443 suggests that, under the Poisson model, the average number of reviews received per listing over the observed period is approximately 15.9. This indicates a relatively high level of guest interaction, assuming the data spans a typical listing lifecycle.
+
+- Model Assumption: This estimation is based on the assumption that the number of reviews follows a Poisson distribution, where each review count is independent of others and occurs with a constant mean rate. This is a standard assumption in modeling count data, which assumes that events (in this case, reviews) occur randomly and independently across the observed space (Airbnb listings).
+
+- Data Fit: The estimated λ provides the value that makes the observed data most probable under the Poisson model, indicating that it offers the best fit to the data according to the likelihood principle. This fit is critical for ensuring that the model accurately reflects the process generating the data.
+
+- Practical Implications: This MLE can be used as a baseline for predicting the expected number of reviews for similar listings under similar conditions. It also serves as a fundamental metric for comparison in more sophisticated models that might include additional variables such as price, location, or host response rates.
+
+<br>
+
+### Estimation of Poisson Regression Model for Airbnb Listings
+
+Next, we extend our simple Poisson model to a Poisson Regression Model where the rate parameter (λ) is not constant but is a function of listing characteristics. This extension allows us to account for the variability in review counts due to factors such as room type, price, location, and host responsiveness.
+
+To enhance the flexibility and accuracy of our model, I will include an additional argument to accommodate a covariate matrix, X. I will also adjust the model’s parameter from a single lambda to a vector of regression coefficients (beta). To ensure that lambda remains positive, as required, I’ll employ the exponential function as the inverse link function. Thus, we define lambda for each observation as exp(X'β), where X is the matrix of covariates, and β is the vector of coefficients. This modification allows us to model how multiple listing attributes influence the number of reviews, enhancing the robustness and relevance of our statistical analysis.
+
+```{r}
+# Define the Poisson regression log-likelihood function
+poisson_regression_likelihood <- function(beta, Y, X) {
+  lambda <- exp(X %*% beta)  # Calculate lambda for each observation
+  log_likelihood <- -sum(lambda) + sum(Y * log(lambda)) - sum(lgamma(Y + 1))
+  return(-log_likelihood)  # Return the negative log-likelihood
+}
+
+```
+
+
+#### Utilizing the Poisson Regression Model for Airbnb Reviews
+
+I will now employ the updated likelihood or log-likelihood function that incorporates a covariate matrix, X, to perform parameter estimation using R’s optim() function. The matrix X will include a constant term and other relevant variables like room type, price, and additional listing features that might influence review counts.
+
+After determining the maximum likelihood estimate (MLE) vector, I’ll use the Hessian matrix returned by the optimization function to calculate the standard errors of the beta parameter estimates. Finally, I will compile the results and present them in a table format, showcasing both the coefficients and their corresponding standard errors. This structured approach will provide a comprehensive statistical basis for our model, ensuring precise interpretation and robust decision-making.
+
+```{r}
+airbnb$price <- scale(airbnb$price)
+airbnb$price_squared <- airbnb$price^2
+
+# Ensure room_type is a factor if not already
+airbnb$room_type <- as.factor(airbnb$room_type)
+
+# Create the model matrix
+X <- model.matrix(~ room_type + price + I(price^2), data = airbnb)
+Y <- airbnb$number_of_reviews  
+
+# Define a safe Poisson regression likelihood function
+poisson_regression_likelihood <- function(beta, Y, X) {
+  eta <- X %*% beta
+  lambda <- exp(pmin(eta, 20))  # Cap the exponential to avoid overflow
+  -sum(dpois(Y, lambda, log = TRUE))  # Negative for minimization in 'optim'
+}
+
+# Initial beta estimates, possibly adjusted from zero if needed
+initial_beta <- rep(0, ncol(X))
+
+# Use 'optim' with a gradient method and provide the gradient if possible
+result <- optim(par = initial_beta, fn = poisson_regression_likelihood, Y = Y, X = X, method = "BFGS", hessian = TRUE)
+beta_mle <- result$par
+hessian_matrix <- result$hessian
+
+# Compute the covariance matrix by inverting the Hessian
+covariance_matrix <- solve(hessian_matrix)
+
+# Standard errors are the square roots of the diagonal elements of the covariance matrix
+std_errors <- sqrt(diag(covariance_matrix))
+
+# Create a table of coefficients and their standard errors
+coef_table <- data.frame(Estimate = beta_mle, Std_Error = std_errors)
+rownames(coef_table) <- colnames(X)
+
+# Print the table
+print(coef_table)
+
+```
+
+
+#### Interpretation of Poisson Regression Coefficients for Airbnb Listings
+
+- Intercept (Constant term): The estimate is 2.8492 with a standard error of 0.0018. The intercept represents the log count of reviews when all other covariates are zero, which in practical terms means a baseline number of reviews for the reference category of room types (likely Entire home/apt given typical data coding practices) and a price of zero. This high value suggests that, absent other influences, listings can expect an exponential number of reviews based on the exponent of this coefficient.
+
+- Room Type - Private Room: The coefficient for private rooms is -0.1584 with a standard error of 0.0028. This indicates that, holding other factors constant, private rooms are expected to have a lower log count of reviews compared to entire homes/apartments. This can be interpreted as private rooms being less likely to receive reviews relative to entire homes by a factor of exp(-0.1584), or about 85.35% of the review count of entire homes, all else being equal.
+
+- Room Type - Shared Room: The coefficient for shared rooms is -0.4102 with a standard error of 0.0086. This much more negative coefficient suggests a significantly lower log count of reviews compared to entire homes, with shared rooms getting only about 66.39% of the reviews of entire homes when other factors are held constant.
+
+- Price: The coefficient for price is -0.1091 with a standard error of 0.0024. This implies that as the price of a listing increases, the number of reviews tends to decrease. Specifically, each unit increase in price (which has been scaled) is associated with about 89.63% of the reviews compared to the baseline, holding other factors constant. This negative relationship indicates that higher-priced listings might deter reviews.
+
+- Price Squared (I(price^2)): The coefficient for the squared price term is 0.0018 with a standard error of 0.00005. The positive coefficient here indicates a curvilinear relationship between price and the number of reviews. As price increases, the initial deterrent effect on reviews (indicated by the negative linear term) starts to lessen, suggesting that at higher prices, the effect of price increases on deterring reviews diminishes.
+
+- Summary: The model suggests that room type and price significantly influence the number of reviews an Airbnb listing receives. While higher prices tend to decrease review counts, this effect is mitigated at higher price levels. Additionally, room type significantly impacts review frequency, with "Entire homes/apt" likely receiving more reviews compared to private and shared rooms. These findings can guide Airbnb hosts in pricing and room type decisions to optimize their visibility and attractiveness based on guest interaction through reviews.
+
+
+## Modeling
+
+Next, I will validate the estimates obtained from the custom optimization by using R’s glm() function to fit the same Poisson model with our covariate matrix X. This step will serve as a robustness check, allowing us to compare the results from our manual optimization approach to those derived from established GLM methods. This comparison helps ensure our model’s reliability and accuracy in predicting outcomes based on our data set.
+
+```{r}
+# Fit the Poisson regression model using glm() for the Airbnb dataset
+airbnb$price <- scale(airbnb$price)  
+airbnb$price_squared <- airbnb$price^2  
+airbnb$room_type <- as.factor(airbnb$room_type)
+
+# Fit the Poisson model
+poisson_glm <- glm(number_of_reviews ~ room_type + price + I(price^2), family = poisson(link = "log"), data = airbnb)
+summary(poisson_glm)
+```
+
+## Interpretation of Poisson Regression Coefficients for Airbnb Listings
+
+### Model Fit and Coefficients:
+#### Intercept (Entire Home/Apt at Base Price):
+- Estimate: 2.8485
+- Standard Error: 0.0018
+- Interpretation: The intercept represents the expected log count of reviews for "Entire home/apt" at the normalized base price (scaled to zero). This coefficient indicates a high baseline number of reviews for this category, suggesting that entire homes/apartments are generally well-received by guests.
+
+#### Room Type - Private Room:
+- Coefficient: -0.1574
+- Standard Error: 0.0028
+- Interpretation: Relative to "Entire home/apt," private rooms receive fewer reviews. The coefficient implies that private rooms receive exp(-0.1574), or about 85.44% of the reviews that entire homes/apartments receive, holding price constant.
+
+#### Room Type - Shared Room:
+- Coefficient: -0.4150
+- Standard Error: 0.0086
+- Interpretation: Shared rooms receive significantly fewer reviews compared to entire homes/apartments, with a coefficient translating to about 66.02% of the reviews of entire homes/apartments, highlighting lower guest preference or satisfaction.
+
+#### Price:
+- Coefficient: -0.1091
+- Standard Error: 0.0026
+- Interpretation: As price increases, the number of reviews decreases. Each unit increase in the scaled price leads to about 89.64% of the reviews compared to the lower price, indicating that higher prices might deter bookings or guest reviews.
+
+#### Price Squared (I(price^2)):
+- Coefficient: 0.0019
+- Standard Error: 0.00009
+- Interpretation: The positive coefficient for price squared suggests diminishing negative impacts at higher prices, indicating a non-linear relationship where very high prices might not deter reviews as strongly, possibly due to luxury or unique offerings that attract a specific guest demographic.
+
+#### Model Diagnostics:
+- Null and Residual Deviance: The significant drop in deviance when moving from the null model to the full model indicates a good fit of the model to the data.
+
+#### Strategic Implications for Entering Airbnb Market:
+Given these findings, "Entire home/apt" priced below $2000 emerges as a highly attractive option for new hosts considering entering the Airbnb market:
+
+- Optimal Price Range: Entire homes/apartments, particularly those priced below $2000, are likely to achieve high review scores and a higher number of reviews, making them appealing to potential guests.
+- Market Positioning: Focusing on this segment allows new hosts to capitalize on the high demand and positive guest perceptions associated with reasonably priced entire homes/apartments.
+- Revenue Optimization: Setting prices strategically within this range can maximize occupancy rates while maintaining high review scores, essential for growth and visibility on the platform.
+
+#### Conclusion:
+The analysis strongly suggests that entering the Airbnb market with "Entire home/apt" offerings priced below $2000 provides a quantifiable benefit by aligning with guest preferences for value and quality. This segment offers a robust opportunity for new hosts to establish a successful presence on Airbnb.
 
