@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.506">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sangho Lee">
-<meta name="dcterms.date" content="2024-04-28">
+<meta name="dcterms.date" content="2024-05-01">
 
 <title>Poisson Regression Examples</title>
 <style>
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -64,7 +98,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 28, 2024</p>
+      <p class="date">May 1, 2024</p>
     </div>
   </div>
   
@@ -72,13 +106,18 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 <section id="airbnb-case-study" class="level2">
 <h2 class="anchored" data-anchor-id="airbnb-case-study">AirBnB Case Study</h2>
 <section id="introduction" class="level3">
 <h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
-<p>AirBnB is a popular platform for booking short-term rentals. In March 2017, students Annika Awad, Evan Lebo, and Anna Linden scraped of 40,000 Airbnb listings from New York City. The data include the following variables:</p>
+<p>AirBnB is a popular platform for booking short-term rentals. In March 2017, students Annika Awad, Evan Lebo, and Anna Linden scraped of 40,000 Airbnb listings from New York City.</p>
+<p>In the dynamic market of short-term rental platforms, understanding the pricing strategies and customer preferences is crucial for maximizing profitability and enhancing service delivery. This analysis delves into the Airbnb dataset to explore the distribution of prices across different room types—Private rooms, Entire homes/apartments, and Shared rooms. By examining the variability in pricing and the density of outliers, we aim to discern which room type not only attracts the most customers but also offers the most lucrative business model for hosts.</p>
+<p>The goal is to identify the best business model by analyzing how room type influences pricing strategies and guest feedback. This involves assessing the median prices, the spread of prices, and the presence of price outliers within each category. Such insights will be instrumental for Airbnb hosts to optimize their offerings and for the platform to advise new hosts on the most profitable room types to list.</p>
+<p>The data include the following variables:</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -107,7 +146,336 @@ Variable Definitions
 </div>
 </div>
 </div>
-<p><em>todo: Assume the number of reviews is a good proxy for the number of bookings. Perform some exploratory data analysis to get a feel for the data, handle or drop observations with missing values on relevant variables, build one or more models (e.g., a poisson regression model for the number of bookings as proxied by the number of reviews), and interpret model coefficients to describe variation in the number of reviews as a function of the variables provided.</em></p>
+</section>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<section id="i-will-begin-by-acquiring-and-examining-the-dataset-that-is-available.-i-will-proceed-to-load-and-inspect-this-data-using-both-python-and-r-equipping-me-to-perform-various-tasks-as-necessary." class="level4">
+<h4 class="anchored" data-anchor-id="i-will-begin-by-acquiring-and-examining-the-dataset-that-is-available.-i-will-proceed-to-load-and-inspect-this-data-using-both-python-and-r-equipping-me-to-perform-various-tasks-as-necessary.">I will begin by acquiring and examining the dataset that is available. I will proceed to load and inspect this data using both Python and R, equipping me to perform various tasks as necessary.</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>airbnb <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"airbnb.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>airbnb <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 8%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 9%">
+<col style="width: 14%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">X</th>
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">days</th>
+<th style="text-align: left;">last_scraped</th>
+<th style="text-align: left;">host_since</th>
+<th style="text-align: left;">room_type</th>
+<th style="text-align: right;">bathrooms</th>
+<th style="text-align: right;">bedrooms</th>
+<th style="text-align: right;">price</th>
+<th style="text-align: right;">number_of_reviews</th>
+<th style="text-align: right;">review_scores_cleanliness</th>
+<th style="text-align: right;">review_scores_location</th>
+<th style="text-align: right;">review_scores_value</th>
+<th style="text-align: left;">instant_bookable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2515</td>
+<td style="text-align: right;">3130</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">9/6/2008</td>
+<td style="text-align: left;">Private room</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">f</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2595</td>
+<td style="text-align: right;">3127</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">9/9/2008</td>
+<td style="text-align: left;">Entire home/apt</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">230</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">f</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3647</td>
+<td style="text-align: right;">3050</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">11/25/2008</td>
+<td style="text-align: left;">Private room</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">f</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3831</td>
+<td style="text-align: right;">3038</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">12/7/2008</td>
+<td style="text-align: left;">Entire home/apt</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">116</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">f</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4611</td>
+<td style="text-align: right;">3012</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">1/2/2009</td>
+<td style="text-align: left;">Private room</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">t</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">5099</td>
+<td style="text-align: right;">2981</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">2/2/2009</td>
+<td style="text-align: left;">Entire home/apt</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">212</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">f</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">5107</td>
+<td style="text-align: right;">2981</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">2/2/2009</td>
+<td style="text-align: left;">Entire home/apt</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">f</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">5121</td>
+<td style="text-align: right;">2980</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">2/3/2009</td>
+<td style="text-align: left;">Private room</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">f</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">5172</td>
+<td style="text-align: right;">2980</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">2/3/2009</td>
+<td style="text-align: left;">Entire home/apt</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">129</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">f</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">5178</td>
+<td style="text-align: right;">2952</td>
+<td style="text-align: left;">4/2/2017</td>
+<td style="text-align: left;">3/3/2009</td>
+<td style="text-align: left;">Private room</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: right;">329</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">f</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyrsm <span class="im">as</span> rsm</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>airbnb <span class="op">=</span> pd.read_csv(<span class="st">"airbnb.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<p>Next, I will focus on analyzing the number of reviews across different room types using box plots. This approach will allow me to compare the spread and central tendency of review counts, providing insights into the variability and typical values within each category of accommodation. By examining these plots, I will assess patterns such as outliers, skewness, and the overall distribution range among Entire homes/apartments, Private rooms, and Shared rooms.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>price_upper_limit <span class="op">=</span> airbnb[<span class="st">'price'</span>].quantile(<span class="fl">0.95</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">12</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>airbnb, x<span class="op">=</span><span class="st">'room_type'</span>, y<span class="op">=</span><span class="st">'price'</span>, palette<span class="op">=</span><span class="st">'Set2'</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Price Distribution by Room Type'</span>, fontsize<span class="op">=</span><span class="dv">30</span>)  </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Room Type'</span>, fontsize<span class="op">=</span><span class="dv">26</span>)  </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Price Per Night'</span>, fontsize<span class="op">=</span><span class="dv">26</span>)  </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">0</span>, price_upper_limit)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(0.0, 350.0)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>([0, 1, 2], [Text(0, 0, 'Private room'), Text(1, 0, 'Entire home/apt'), Text(2, 0, 'Shared room')])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(array([  0.,  50., 100., 150., 200., 250., 300., 350.]), [Text(0, 0.0, '0'), Text(0, 50.0, '50'), Text(0, 100.0, '100'), Text(0, 150.0, '150'), Text(0, 200.0, '200'), Text(0, 250.0, '250'), Text(0, 300.0, '300'), Text(0, 350.0, '350')])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw2_questions_2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="1536"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretation-of-the-box-plot" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-of-the-box-plot">Interpretation of the box plot</h3>
+<section id="private-room" class="level4">
+<h4 class="anchored" data-anchor-id="private-room">Private Room:</h4>
+<ul>
+<li>The box plot shows a relatively lower price range compared to the other room types, with the majority of prices clustered around the lower quartile.</li>
+<li>The median price appears to be around $50, indicating that half of the private rooms are priced below this amount.</li>
+<li>There are several outliers above the upper whisker, suggesting that some private rooms are priced significantly higher than typical listings.</li>
+</ul>
+</section>
+<section id="entire-homeapt" class="level4">
+<h4 class="anchored" data-anchor-id="entire-homeapt">Entire Home/Apt:</h4>
+<ul>
+<li>This category exhibits the highest median price, around $150, reflecting its status as a more premium option.</li>
+<li>The interquartile range (IQR) is wider, indicating a larger variation in prices for entire homes or apartments compared to private rooms.</li>
+<li>There are many outliers indicating that a significant number of entire homes/apartments are priced much higher than the upper quartile.</li>
+</ul>
+</section>
+<section id="shared-room" class="level4">
+<h4 class="anchored" data-anchor-id="shared-room">Shared Room:</h4>
+<ul>
+<li>Shared rooms show the lowest median price, around $35, which is expected given the shared nature of the accommodation.</li>
+<li>The box for shared rooms is relatively compact, indicating less variation in price compared to the other room types.</li>
+<li>There are a few outliers, but not as extreme as in the case of private rooms.</li>
+</ul>
+</section>
+<section id="overall-insights" class="level4">
+<h4 class="anchored" data-anchor-id="overall-insights">Overall Insights:</h4>
+<ul>
+<li>The price distribution indicates that entire homes or apartments are generally the most expensive type of accommodation on Airbnb, followed by private rooms, and then shared rooms.</li>
+<li>The presence of outliers in each category, particularly in entire homes and private rooms, suggests that there are premium offerings in these categories that significantly exceed typical prices.</li>
+<li>The variability in prices for entire homes/apartments is greater, potentially due to differences in size, location, or additional amenities offered. This analysis can help Airbnb hosts and users understand typical pricing structures and adjust their expectations or pricing strategies accordingly.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot for price vs. review scores</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">18</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span><span class="st">'price'</span>, y<span class="op">=</span><span class="st">'review_scores_value'</span>, data<span class="op">=</span>airbnb)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Price vs. Review Scores Value'</span>, fontsize<span class="op">=</span><span class="dv">30</span>)  </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Price'</span>, fontsize<span class="op">=</span><span class="dv">26</span>) </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Review Score Value'</span>, fontsize<span class="op">=</span><span class="dv">26</span>)  </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(array([-2000.,     0.,  2000.,  4000.,  6000.,  8000., 10000., 12000.]), [Text(-2000.0, 0, '−2000'), Text(0.0, 0, '0'), Text(2000.0, 0, '2000'), Text(4000.0, 0, '4000'), Text(6000.0, 0, '6000'), Text(8000.0, 0, '8000'), Text(10000.0, 0, '10000'), Text(12000.0, 0, '12000')])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(array([ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11.]), [Text(0, 1.0, '1'), Text(0, 2.0, '2'), Text(0, 3.0, '3'), Text(0, 4.0, '4'), Text(0, 5.0, '5'), Text(0, 6.0, '6'), Text(0, 7.0, '7'), Text(0, 8.0, '8'), Text(0, 9.0, '9'), Text(0, 10.0, '10'), Text(0, 11.0, '11')])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw2_questions_2_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="1920"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This scatter plot visualizes the relationship between the price of Airbnb listings and their review scores for value. Here’s an interpretation based on the plot:</p>
+<ul>
+<li><p>Concentration of Data Points: The majority of listings are priced below $2000, with most review scores clustered around the higher end (8 to 10). This suggests that more reasonably priced listings tend to have higher value ratings from guests.</p></li>
+<li><p>High-Price Listings: There are a few listings priced above $2000, reaching up to $10000. Interestingly, these high-priced listings still maintain relatively high review scores, mostly around 8 to 9. However, it’s noteworthy that no scores below 7 are visible, indicating that guests might still perceive these high-priced listings as offering good value, likely due to luxury or unique features.</p></li>
+<li><p>Plateau of Review Scores: The review scores predominantly range from 8 to 10 across all price ranges, suggesting that most guests feel they receive good value for what they pay, independent of the listing price. This could indicate a consistent level of satisfaction with the perceived value among Airbnb users.</p></li>
+<li><p>Lower Scores at Mid-Range Prices: A few listings in the mid-price range (around $2000 to $4000) have lower review scores (as low as 3), which could suggest that guests might have higher expectations that are not met when spending more. It appears these are outliers, as most other listings in similar price ranges maintain higher scores.</p></li>
+<li><p>Low-Price, Low-Score Trend: Interestingly, the plot also reveals a trend where the lowest-priced listings (below around $50) sometimes receive lower value scores, suggesting that extremely low prices might be associated with subpar accommodations or services. This could indicate that while most low to moderately priced listings offer good value, there is a threshold below which the quality drops significantly, impacting guest satisfaction.</p></li>
+<li><p>Overall, the plot shows that while price varies widely among Airbnb listings, the review scores for value remain high across the board, with notable exceptions at both mid-range and very low prices. This suggests that both under-delivering at mid-range prices and potential quality issues at extremely low prices can be detrimental to guest perceptions of value. This indicates that price alone may not be a deterrent to receiving high value scores, provided the offerings align well with guest expectations.</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -192,10 +560,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -205,8 +572,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -219,6 +595,135 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        typesetMath(container);
+        return container.innerHTML
+      } else {
+        typesetMath(note);
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      typesetMath(note);
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -262,6 +767,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -287,6 +793,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -347,6 +879,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

@@ -11,7 +11,15 @@ editor_options:
 
 ### Introduction
 
-AirBnB is a popular platform for booking short-term rentals. In March 2017, students Annika Awad, Evan Lebo, and Anna Linden scraped of 40,000 Airbnb listings from New York City.  The data include the following variables:
+AirBnB is a popular platform for booking short-term rentals. In March 2017, students Annika Awad, Evan Lebo, and Anna Linden scraped of 40,000 Airbnb listings from New York City.  
+
+In the dynamic market of short-term rental platforms, understanding the pricing strategies and customer preferences is crucial for maximizing profitability and enhancing service delivery. This analysis delves into the Airbnb dataset to explore the distribution of prices across different room types—Private rooms, Entire homes/apartments, and Shared rooms. By examining the variability in pricing and the density of outliers, we aim to discern which room type not only attracts the most customers but also offers the most lucrative business model for hosts.
+
+The goal is to identify the best business model by analyzing how room type influences pricing strategies and guest feedback. This involves assessing the median prices, the spread of prices, and the presence of price outliers within each category. Such insights will be instrumental for Airbnb hosts to optimize their offerings and for the platform to advise new hosts on the most profitable room types to list.
+
+
+
+The data include the following variables:
 
 :::: {.callout-note collapse="true"}
 ### Variable Definitions
@@ -33,8 +41,111 @@ AirBnB is a popular platform for booking short-term rentals. In March 2017, stud
 ::::
 
 
-_todo: Assume the number of reviews is a good proxy for the number of bookings. Perform some exploratory data analysis to get a feel for the data, handle or drop observations with missing values on relevant variables, build one or more models (e.g., a poisson regression model for the number of bookings as proxied by the number of reviews), and interpret model coefficients to describe variation in the number of reviews as a function of the variables provided._
+## Data
+#### I will begin by acquiring and examining the dataset that is available. I will proceed to load and inspect this data using both Python and R, equipping me to perform various tasks as necessary.
 
+```{r, message=FALSE, warning=FALSE}
+library(haven)
+library(tidyverse)
+library(magrittr)
+library(scales)
+library(data.table)
+library(reticulate)
+```
+
+```{r}
+airbnb <- read.csv("airbnb.csv")
+airbnb %>% 
+  head(10) %>% 
+  knitr::kable() 
+
+```
+
+
+```{python}
+import pandas as pd
+import numpy as np
+import pyrsm as rsm
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+import seaborn as sns
+```
+
+```{python}
+airbnb = pd.read_csv("airbnb.csv")
+
+```
+
+<br>
+
+Next, I will focus on analyzing the number of reviews across different room types using box plots. This approach will allow me to compare the spread and central tendency of review counts, providing insights into the variability and typical values within each category of accommodation. By examining these plots, I will assess patterns such as outliers, skewness, and the overall distribution range among Entire homes/apartments, Private rooms, and Shared rooms.
+
+
+```{python, warning = FALSE, message = FALSE}
+price_upper_limit = airbnb['price'].quantile(0.95)
+
+plt.figure(figsize=(16, 12))
+sns.boxplot(data=airbnb, x='room_type', y='price', palette='Set2')
+plt.title('Price Distribution by Room Type', fontsize=30)  
+plt.xlabel('Room Type', fontsize=26)  
+plt.ylabel('Price Per Night', fontsize=26)  
+plt.ylim(0, price_upper_limit)  
+
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+
+plt.show()
+
+```
+
+### Interpretation of the box plot
+
+#### Private Room:
+- The box plot shows a relatively lower price range compared to the other room types, with the majority of prices clustered around the lower quartile. 
+- The median price appears to be around $50, indicating that half of the private rooms are priced below this amount.
+- There are several outliers above the upper whisker, suggesting that some private rooms are priced significantly higher than typical listings.
+
+#### Entire Home/Apt:
+- This category exhibits the highest median price, around $150, reflecting its status as a more premium option.
+- The interquartile range (IQR) is wider, indicating a larger variation in prices for entire homes or apartments compared to private rooms.
+- There are many outliers indicating that a significant number of entire homes/apartments are priced much higher than the upper quartile.
+
+#### Shared Room:
+- Shared rooms show the lowest median price, around $35, which is expected given the shared nature of the accommodation.
+- The box for shared rooms is relatively compact, indicating less variation in price compared to the other room types.
+- There are a few outliers, but not as extreme as in the case of private rooms.
+
+#### Overall Insights:
+- The price distribution indicates that entire homes or apartments are generally the most expensive type of accommodation on Airbnb, followed by private rooms, and then shared rooms.
+- The presence of outliers in each category, particularly in entire homes and private rooms, suggests that there are premium offerings in these categories that significantly exceed typical prices.
+- The variability in prices for entire homes/apartments is greater, potentially due to differences in size, location, or additional amenities offered.
+This analysis can help Airbnb hosts and users understand typical pricing structures and adjust their expectations or pricing strategies accordingly.
+
+
+
+```{python, warning = FALSE, message = FALSE}
+# Scatter plot for price vs. review scores
+plt.figure(figsize=(20, 18))
+sns.scatterplot(x='price', y='review_scores_value', data=airbnb)
+plt.title('Price vs. Review Scores Value', fontsize=30)  
+plt.xlabel('Price', fontsize=26) 
+plt.ylabel('Review Score Value', fontsize=26)  
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+
+plt.show()
+```
+
+
+This scatter plot visualizes the relationship between the price of Airbnb listings and their review scores for value. Here's an interpretation based on the plot:
+
+- Concentration of Data Points: The majority of listings are priced below $2000, with most review scores clustered around the higher end (8 to 10). This suggests that more reasonably priced listings tend to have higher value ratings from guests.
+- High-Price Listings: There are a few listings priced above $2000, reaching up to $10000. Interestingly, these high-priced listings still maintain relatively high review scores, mostly around 8 to 9. However, it's noteworthy that no scores below 7 are visible, indicating that guests might still perceive these high-priced listings as offering good value, likely due to luxury or unique features.
+- Plateau of Review Scores: The review scores predominantly range from 8 to 10 across all price ranges, suggesting that most guests feel they receive good value for what they pay, independent of the listing price. This could indicate a consistent level of satisfaction with the perceived value among Airbnb users.
+- Lower Scores at Mid-Range Prices: A few listings in the mid-price range (around $2000 to $4000) have lower review scores (as low as 3), which could suggest that guests might have higher expectations that are not met when spending more. It appears these are outliers, as most other listings in similar price ranges maintain higher scores.
+- Low-Price, Low-Score Trend: Interestingly, the plot also reveals a trend where the lowest-priced listings (below around $50) sometimes receive lower value scores, suggesting that extremely low prices might be associated with subpar accommodations or services. This could indicate that while most low to moderately priced listings offer good value, there is a threshold below which the quality drops significantly, impacting guest satisfaction.
+
+- Overall, the plot shows that while price varies widely among Airbnb listings, the review scores for value remain high across the board, with notable exceptions at both mid-range and very low prices. This suggests that both under-delivering at mid-range prices and potential quality issues at extremely low prices can be detrimental to guest perceptions of value. This indicates that price alone may not be a deterrent to receiving high value scores, provided the offerings align well with guest expectations.
 
 
 
