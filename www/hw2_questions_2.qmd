@@ -1,8 +1,7 @@
 ---
-title: "Poisson Regression Examples"
 author: "Sangho Lee"
 date: 5/1/2024
-callout-appearance: minimal # this hides the blue "i" icon on .callout-notes
+callout-appearance: minimal 
 editor_options: 
   chunk_output_type: console
 ---
@@ -124,7 +123,6 @@ This analysis can help Airbnb hosts and users understand typical pricing structu
 
 
 ```{python, warning = FALSE, message = FALSE}
-# Scatter plot for price vs. review scores
 plt.figure(figsize=(20, 18))
 sns.scatterplot(x='price', y='review_scores_value', data=airbnb)
 plt.title('Price vs. Review Scores Value', fontsize=34)  
@@ -287,8 +285,6 @@ result <- optim(par = mean(y), fn = neg_log_likelihood_poisson, y = y, method = 
 
 # The MLE of lambda
 lambda_mle <- result$par
-
-# Output the MLE of lambda
 print(lambda_mle)
 
 ```
@@ -315,11 +311,11 @@ Next, we extend our simple Poisson model to a Poisson Regression Model where the
 To enhance the flexibility and accuracy of our model, I will include an additional argument to accommodate a covariate matrix, X. I will also adjust the model’s parameter from a single lambda to a vector of regression coefficients (beta). To ensure that lambda remains positive, as required, I’ll employ the exponential function as the inverse link function. Thus, we define lambda for each observation as exp(X'β), where X is the matrix of covariates, and β is the vector of coefficients. This modification allows us to model how multiple listing attributes influence the number of reviews, enhancing the robustness and relevance of our statistical analysis.
 
 ```{r}
-# Define the Poisson regression log-likelihood function
+# Poisson regression log-likelihood function
 poisson_regression_likelihood <- function(beta, Y, X) {
-  lambda <- exp(X %*% beta)  # Calculate lambda for each observation
+  lambda <- exp(X %*% beta) 
   log_likelihood <- -sum(lambda) + sum(Y * log(lambda)) - sum(lgamma(Y + 1))
-  return(-log_likelihood)  # Return the negative log-likelihood
+  return(-log_likelihood)  
 }
 
 ```
@@ -335,18 +331,17 @@ After determining the maximum likelihood estimate (MLE) vector, I’ll use the H
 airbnb$price <- scale(airbnb$price)
 airbnb$price_squared <- airbnb$price^2
 
-# Ensure room_type is a factor if not already
 airbnb$room_type <- as.factor(airbnb$room_type)
 
-# Create the model matrix
+# Model matrix
 X <- model.matrix(~ room_type + price + I(price^2), data = airbnb)
 Y <- airbnb$number_of_reviews  
 
 # Define a safe Poisson regression likelihood function
 poisson_regression_likelihood <- function(beta, Y, X) {
   eta <- X %*% beta
-  lambda <- exp(pmin(eta, 20))  # Cap the exponential to avoid overflow
-  -sum(dpois(Y, lambda, log = TRUE))  # Negative for minimization in 'optim'
+  lambda <- exp(pmin(eta, 20))  
+  -sum(dpois(Y, lambda, log = TRUE))  
 }
 
 # Initial beta estimates, possibly adjusted from zero if needed
@@ -366,8 +361,6 @@ std_errors <- sqrt(diag(covariance_matrix))
 # Create a table of coefficients and their standard errors
 coef_table <- data.frame(Estimate = beta_mle, Std_Error = std_errors)
 rownames(coef_table) <- colnames(X)
-
-# Print the table
 print(coef_table)
 
 ```

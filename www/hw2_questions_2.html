@@ -9,7 +9,7 @@
 <meta name="author" content="Sangho Lee">
 <meta name="dcterms.date" content="2024-05-01">
 
-<title>Poisson Regression Examples</title>
+<title>hw2_questions_2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -81,7 +81,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Poisson Regression Examples</h1>
 </div>
 
 
@@ -443,13 +442,12 @@ Variable Definitions
 <li>The variability in prices for entire homes/apartments is greater, potentially due to differences in size, location, or additional amenities offered. This analysis can help Airbnb hosts and users understand typical pricing structures and adjust their expectations or pricing strategies accordingly.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot for price vs. review scores</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">18</span>))</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span><span class="st">'price'</span>, y<span class="op">=</span><span class="st">'review_scores_value'</span>, data<span class="op">=</span>airbnb)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Price vs. Review Scores Value'</span>, fontsize<span class="op">=</span><span class="dv">34</span>)  </span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Price'</span>, fontsize<span class="op">=</span><span class="dv">30</span>) </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Review Score Value'</span>, fontsize<span class="op">=</span><span class="dv">30</span>)  </span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">26</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">18</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span><span class="st">'price'</span>, y<span class="op">=</span><span class="st">'review_scores_value'</span>, data<span class="op">=</span>airbnb)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Price vs. Review Scores Value'</span>, fontsize<span class="op">=</span><span class="dv">34</span>)  </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Price'</span>, fontsize<span class="op">=</span><span class="dv">30</span>) </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Review Score Value'</span>, fontsize<span class="op">=</span><span class="dv">30</span>)  </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">26</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(array([-2000.,     0.,  2000.,  4000.,  6000.,  8000., 10000., 12000.]), [Text(-2000.0, 0, '−2000'), Text(0.0, 0, '0'), Text(2000.0, 0, '2000'), Text(4000.0, 0, '4000'), Text(6000.0, 0, '6000'), Text(8000.0, 0, '8000'), Text(10000.0, 0, '10000'), Text(12000.0, 0, '12000')])</code></pre>
 </div>
@@ -488,7 +486,7 @@ Variable Definitions
 </div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(array([9.175, 9.2  , 9.225, 9.25 , 9.275, 9.3  , 9.325, 9.35 , 9.375]), [Text(0, 9.175, '9.175'), Text(0, 9.200000000000001, '9.200'), Text(0, 9.225000000000001, '9.225'), Text(0, 9.25, '9.250'), Text(0, 9.275, '9.275'), Text(0, 9.3, '9.300'), Text(0, 9.325000000000001, '9.325'), Text(0, 9.350000000000001, '9.350'), Text(0, 9.375, '9.375')])</code></pre>
+<pre><code>(array([9.18, 9.2 , 9.22, 9.24, 9.26, 9.28, 9.3 , 9.32, 9.34, 9.36, 9.38]), [Text(0, 9.18, '9.18'), Text(0, 9.2, '9.20'), Text(0, 9.219999999999999, '9.22'), Text(0, 9.24, '9.24'), Text(0, 9.26, '9.26'), Text(0, 9.28, '9.28'), Text(0, 9.299999999999999, '9.30'), Text(0, 9.32, '9.32'), Text(0, 9.34, '9.34'), Text(0, 9.36, '9.36'), Text(0, 9.379999999999999, '9.38')])</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -641,9 +639,7 @@ Variable Definitions
 <span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co"># The MLE of lambda</span></span>
 <span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>lambda_mle <span class="ot">&lt;-</span> result<span class="sc">$</span>par</span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Output the MLE of lambda</span></span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(lambda_mle)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(lambda_mle)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 15.90443</code></pre>
 </div>
@@ -665,11 +661,11 @@ Variable Definitions
 <p>Next, we extend our simple Poisson model to a Poisson Regression Model where the rate parameter (λ) is not constant but is a function of listing characteristics. This extension allows us to account for the variability in review counts due to factors such as room type, price, location, and host responsiveness.</p>
 <p>To enhance the flexibility and accuracy of our model, I will include an additional argument to accommodate a covariate matrix, X. I will also adjust the model’s parameter from a single lambda to a vector of regression coefficients (beta). To ensure that lambda remains positive, as required, I’ll employ the exponential function as the inverse link function. Thus, we define lambda for each observation as exp(X’β), where X is the matrix of covariates, and β is the vector of coefficients. This modification allows us to model how multiple listing attributes influence the number of reviews, enhancing the robustness and relevance of our statistical analysis.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Poisson regression log-likelihood function</span></span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Poisson regression log-likelihood function</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>poisson_regression_likelihood <span class="ot">&lt;-</span> <span class="cf">function</span>(beta, Y, X) {</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(X <span class="sc">%*%</span> beta)  <span class="co"># Calculate lambda for each observation</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(X <span class="sc">%*%</span> beta) </span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  log_likelihood <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">sum</span>(lambda) <span class="sc">+</span> <span class="fu">sum</span>(Y <span class="sc">*</span> <span class="fu">log</span>(lambda)) <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">lgamma</span>(Y <span class="sc">+</span> <span class="dv">1</span>))</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="sc">-</span>log_likelihood)  <span class="co"># Return the negative log-likelihood</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="sc">-</span>log_likelihood)  </span>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="utilizing-the-poisson-regression-model-for-airbnb-reviews" class="level4">
@@ -680,40 +676,37 @@ Variable Definitions
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>airbnb<span class="sc">$</span>price <span class="ot">&lt;-</span> <span class="fu">scale</span>(airbnb<span class="sc">$</span>price)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>airbnb<span class="sc">$</span>price_squared <span class="ot">&lt;-</span> airbnb<span class="sc">$</span>price<span class="sc">^</span><span class="dv">2</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure room_type is a factor if not already</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>airbnb<span class="sc">$</span>room_type <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(airbnb<span class="sc">$</span>room_type)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the model matrix</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> room_type <span class="sc">+</span> price <span class="sc">+</span> <span class="fu">I</span>(price<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> airbnb)</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> airbnb<span class="sc">$</span>number_of_reviews  </span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a safe Poisson regression likelihood function</span></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>poisson_regression_likelihood <span class="ot">&lt;-</span> <span class="cf">function</span>(beta, Y, X) {</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  eta <span class="ot">&lt;-</span> X <span class="sc">%*%</span> beta</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">pmin</span>(eta, <span class="dv">20</span>))  <span class="co"># Cap the exponential to avoid overflow</span></span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dpois</span>(Y, lambda, <span class="at">log =</span> <span class="cn">TRUE</span>))  <span class="co"># Negative for minimization in 'optim'</span></span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial beta estimates, possibly adjusted from zero if needed</span></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>initial_beta <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(X))</span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Use 'optim' with a gradient method and provide the gradient if possible</span></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> initial_beta, <span class="at">fn =</span> poisson_regression_likelihood, <span class="at">Y =</span> Y, <span class="at">X =</span> X, <span class="at">method =</span> <span class="st">"BFGS"</span>, <span class="at">hessian =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>beta_mle <span class="ot">&lt;-</span> result<span class="sc">$</span>par</span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>hessian_matrix <span class="ot">&lt;-</span> result<span class="sc">$</span>hessian</span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the covariance matrix by inverting the Hessian</span></span>
-<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>covariance_matrix <span class="ot">&lt;-</span> <span class="fu">solve</span>(hessian_matrix)</span>
-<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard errors are the square roots of the diagonal elements of the covariance matrix</span></span>
-<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>std_errors <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(covariance_matrix))</span>
-<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a table of coefficients and their standard errors</span></span>
-<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>coef_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Estimate =</span> beta_mle, <span class="at">Std_Error =</span> std_errors)</span>
-<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(coef_table) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(X)</span>
-<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the table</span></span>
-<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(coef_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>airbnb<span class="sc">$</span>room_type <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(airbnb<span class="sc">$</span>room_type)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Model matrix</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> room_type <span class="sc">+</span> price <span class="sc">+</span> <span class="fu">I</span>(price<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> airbnb)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> airbnb<span class="sc">$</span>number_of_reviews  </span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a safe Poisson regression likelihood function</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>poisson_regression_likelihood <span class="ot">&lt;-</span> <span class="cf">function</span>(beta, Y, X) {</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  eta <span class="ot">&lt;-</span> X <span class="sc">%*%</span> beta</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">pmin</span>(eta, <span class="dv">20</span>))  </span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dpois</span>(Y, lambda, <span class="at">log =</span> <span class="cn">TRUE</span>))  </span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial beta estimates, possibly adjusted from zero if needed</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>initial_beta <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(X))</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Use 'optim' with a gradient method and provide the gradient if possible</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> initial_beta, <span class="at">fn =</span> poisson_regression_likelihood, <span class="at">Y =</span> Y, <span class="at">X =</span> X, <span class="at">method =</span> <span class="st">"BFGS"</span>, <span class="at">hessian =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>beta_mle <span class="ot">&lt;-</span> result<span class="sc">$</span>par</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>hessian_matrix <span class="ot">&lt;-</span> result<span class="sc">$</span>hessian</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the covariance matrix by inverting the Hessian</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>covariance_matrix <span class="ot">&lt;-</span> <span class="fu">solve</span>(hessian_matrix)</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard errors are the square roots of the diagonal elements of the covariance matrix</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>std_errors <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(covariance_matrix))</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a table of coefficients and their standard errors</span></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>coef_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Estimate =</span> beta_mle, <span class="at">Std_Error =</span> std_errors)</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(coef_table) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(X)</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(coef_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                          Estimate    Std_Error
 (Intercept)            2.849234034 1.805864e-03
